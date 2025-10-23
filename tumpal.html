@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard Tumpal - Web Digital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --bg:#f3f6fb; --card:#ffffff; --muted:#64748b;
+      --green:#9ae6b4; --yellow:#fde68a; --accent:#2563eb;
+      --table-border:#e6eef9;
+    }
+    *{box-sizing:border-box;font-family:'Poppins',sans-serif}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#ebf6ff);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:36px}
+    .wrap{width:980px;max-width:95vw}
+    header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    header .logo{
+      width:60px;height:60px;border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),#1e40af);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-weight:700;font-size:28px;
+      box-shadow:0 8px 24px rgba(37,99,235,0.25)
+    }
+    header h1{font-size:1.35rem;color:#0f172a;margin:0}
+    .muted{color:var(--muted);font-size:0.9rem}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+    .card{background:var(--card);border-radius:12px;padding:14px 14px 18px;box-shadow:0 8px 24px rgba(15,23,42,0.06);border:1px solid rgba(15,23,42,0.03)}
+    .card .title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .card .title .label{font-weight:700;color:#04447b;display:flex;align-items:center;gap:8px}
+    .card .title i{color:#2563eb}
+    .controls{display:flex;gap:8px;align-items:center}
+    .controls button{background:var(--accent);border:none;color:white;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+    .controls button.ghost{background:#eef6ff;color:var(--accent);border:1px solid rgba(37,99,235,0.12)}
+    table{width:100%;border-collapse:collapse;background:transparent}
+    th, td{padding:8px 6px;border:1px solid var(--table-border);text-align:center;font-size:0.95rem}
+    th{background:#f8fbff;font-weight:700;color:#0b3a66}
+    td input{width:100%;border:0;padding:6px;text-align:center;font-weight:600;background:transparent}
+    td input:focus{outline:none;background:#eef6ff}
+    .summary{display:flex;align-items:center;gap:12px;margin-top:8px}
+    .sum-box{background:linear-gradient(180deg,#fff,#f6fbff);padding:12px 16px;border-radius:10px;min-width:120px;text-align:center;box-shadow:inset 0 -6px 12px rgba(37,99,235,0.03)}
+    .sum-box.small{min-width:88px}
+    .sum-label{font-size:0.85rem;color:var(--muted)}
+    .sum-value{font-size:1.25rem;font-weight:800;color:#0b2540;margin-top:6px}
+    .total-big{flex:1;background:linear-gradient(90deg,#fef3c7,#fdba74);padding:10px;border-radius:10px;font-weight:800;color:#92400e;text-align:left}
+    .total-big span{float:right;font-size:1.1rem}
+    .bottom-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+    .small-btn{background:#fff;border:1px solid #e6eef9;padding:8px 10px;border-radius:8px;cursor:pointer}
+    @media(max-width:880px){.grid{grid-template-columns:1fr}.total-big{font-size:0.95rem}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"><i class="fa-solid fa-gauge-high"></i></div>
+      <div>
+        <h1>Dashboard Tumpal — Eko Cahyo Satrio</h1>
+        <div class="muted">Edit nilai langsung, total terhitung otomatis</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- TUMPAL 1 -->
+      <div class="card" id="card1">
+        <div class="title">
+          <div class="label"><i class="fa-solid fa-gauge-simple-high"></i> TUMPAL 1</div>
+          <div class="controls">
+            <button onclick="addRow(1)">+ Baris</button>
+            <button class="ghost" onclick="resetTumpal(1)">Reset</button>
+          </div>
+        </div>
+
+        <table id="tbl1">
+          <thead>
+            <tr><th>Pakan</th><th>Density</th><th>Jumlah Helai</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="29" oninput="recalc()"></td><td><button class="small-btn" onclick="removeRow(this)">Del</button></td></tr>
+            <tr><td><input type="number" value="2" oninput="recalc()" readonly></td><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="4" oninput="recalc()"></td><td><button class="small-btn" onclick="removeRow(this)">Del</button></td></tr>
+            <tr><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="29" oninput="recalc()"></td><td><button class="small-btn" onclick="removeRow(this)">Del</button></td></tr>
+            <tr><td><input type="number" value="2" oninput="recalc()" readonly></td><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="2" oninput="recalc()"></td><td><button class="small-btn" onclick="removeRow(this)">Del</button></td></tr>
+          </tbody>
+        </table>
+
+        <div class="summary">
+          <div class="sum-box">
+            <div class="sum-label">T1 Total</div>
+            <div class="sum-value" id="sum1">0</div>
+          </div>
+          <div class="sum-box small">
+            <div class="sum-label">Baris</div>
+            <div class="sum-value" id="rows1">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TUMPAL 2 -->
+      <div class="card" id="card2">
+        <div class="title">
+          <div class="label"><i class="fa-solid fa-gauge-simple"></i> TUMPAL 2</div>
+          <div class="controls">
+            <button onclick="addRow(2)">+ Baris</button>
+            <button class="ghost" onclick="resetTumpal(2)">Reset</button>
+          </div>
+        </div>
+
+        <table id="tbl2">
+          <thead>
+            <tr><th>Pakan</th><th>Density</th><th>Jumlah Helai</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="29" oninput="recalc()"></td><td><button class="small-btn" onclick="removeRow(this)">Del</button></td></tr>
+            <tr><td><input type="number" value="2" oninput="recalc()" readonly></td><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="4" oninput="recalc()"></td><td><button class="small-btn" onclick="removeRow(this)">Del</button></td></tr>
+            <tr><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="1" oninput="recalc()" readonly></td><td><input type="number" value="45" oninput="recalc()"></td><td><button class="small-btn" onclick="removeRow(this)">Del</button></td></tr>
+          </tbody>
+        </table>
+
+        <div class="summary">
+          <div class="sum-box">
+            <div class="sum-label">T2 Total</div>
+            <div class="sum-value" id="sum2">0</div>
+          </div>
+          <div class="sum-box small">
+            <div class="sum-label">Baris</div>
+            <div class="sum-value" id="rows2">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="card" style="margin-top:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div class="muted">Rekapitulasi</div>
+          <div style="display:flex;gap:12px;margin-top:8px">
+            <div class="sum-box">
+              <div class="sum-label">T1</div>
+              <div class="sum-value" id="recT1">0</div>
+            </div>
+            <div class="sum-box">
+              <div class="sum-label">T2</div>
+              <div class="sum-value" id="recT2">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:right">
+          <div class="muted">TOTAL</div>
+          <div class="total-big" id="grandTotal"><strong>TOTAL</strong> <span id="totalValue">0</span></div>
+        </div>
+      </div>
+
+      <div class="bottom-actions">
+        <button class="small-btn" onclick="exportCSV()">Export CSV</button>
+        <button class="small-btn" onclick="importSample()">Load Sample</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded',()=>recalc());
+
+  function getTableSum(tblId){
+    const tbl=document.getElementById(tblId);
+    let sum=0, rows=0;
+    tbl.querySelectorAll('tbody tr').forEach(tr=>{
+      const vals = tr.querySelectorAll('input');
+      const pakan = parseFloat(vals[0]?.value)||0;
+      const dens = parseFloat(vals[1]?.value)||0;
+      const helai = parseFloat(vals[2]?.value)||0;
+      sum += pakan * dens * helai;
+      rows++;
+    });
+    return {sum,rows};
+  }
+
+  function recalc(){
+    const a=getTableSum('tbl1');
+    const b=getTableSum('tbl2');
+    document.getElementById('sum1').textContent = a.sum.toFixed(0);
+    document.getElementById('rows1').textContent = a.rows;
+    document.getElementById('sum2').textContent = b.sum.toFixed(0);
+    document.getElementById('rows2').textContent = b.rows;
+    document.getElementById('recT1').textContent = a.sum.toFixed(0);
+    document.getElementById('recT2').textContent = b.sum.toFixed(0);
+    document.getElementById('totalValue').textContent = (a.sum+b.sum).toFixed(0);
+  }
+
+  function addRow(tumpal){
+    const tbl = document.getElementById(tumpal===1?'tbl1':'tbl2').querySelector('tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="number" value="1" oninput="recalc()" readonly></td>
+      <td><input type="number" value="1" oninput="recalc()" readonly></td>
+      <td><input type="number" value="0" oninput="recalc()"></td>
+      <td><button class="small-btn" onclick="removeRow(this)">Del</button></td>`;
+    tbl.appendChild(tr);
+    recalc();
+  }
+
+  function removeRow(btn){ btn.closest('tr').remove(); recalc(); }
+  function resetTumpal(t){ document.getElementById(t===1?'tbl1':'tbl2').querySelector('tbody').innerHTML=''; recalc(); }
+
+  function exportCSV(){
+    let csv = 'Tumpal,Pakan,Density,Jumlah Helai\n';
+    ['tbl1','tbl2'].forEach((tblId,idx)=>{
+      const name = idx===0?'TUMPAL 1':'TUMPAL 2';
+      document.querySelectorAll('#'+tblId+' tbody tr').forEach(tr=>{
+        const v = [...tr.querySelectorAll('input')].map(i=>i.value||0);
+        csv += `${name},${v.join(',')}\n`;
+      });
+    });
+    const blob = new Blob([csv],{type:'text/csv'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tumpal_export.csv'; a.click();
+  }
+
+  function importSample(){ location.reload(); }
+</script>
+</body>
+</html>
